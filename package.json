@@ -39,7 +39,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-storefront": "^8.17.2",
-    "react-visibility-sensor": "^5.1.1"
+    "react-visibility-sensor": "^5.1.1",
+    "@fenome/react-storefront-shopify-connector": "file:../@fenome/react-storefront-shopify-connector"
   },
   "devDependencies": {
     "babel-plugin-transform-imports": "^2.0.0",
