@@ -130,7 +130,7 @@ const Product = React.memo(lazyProps => {
       </Typography>
       <Hbox>
         <Typography style={{ marginRight: theme.spacing(2) }}>{product.priceText}</Typography>
-        <Rating value={product.rating} reviewCount={10} />
+        {product?.rating && <Rating value={product.rating} reviewCount={10} />}
       </Hbox>
     </Row>
   )
@@ -175,23 +175,25 @@ const Product = React.memo(lazyProps => {
                     <div style={{ paddingBottom: theme.spacing(1) }}>{header}</div>
                   </Hidden>
                   {product ? (
-                    <>
-                      <Hbox style={{ marginBottom: 10 }}>
-                        <Label>COLOR: </Label>
-                        <Typography>{color.text}</Typography>
-                      </Hbox>
-                      <ProductOptionSelector
-                        options={product.colors}
-                        value={color}
-                        onChange={value =>
-                          updateState({ ...state, pageData: { ...state.pageData, color: value } })
-                        }
-                        strikeThroughDisabled
-                        optionProps={{
-                          showLabel: false,
-                        }}
-                      />
-                    </>
+                    product.colors && (
+                      <>
+                        <Hbox style={{ marginBottom: 10 }}>
+                          <Label>COLOR: </Label>
+                          <Typography>{color.text}</Typography>
+                        </Hbox>
+                        <ProductOptionSelector
+                          options={product.colors}
+                          value={color}
+                          onChange={value =>
+                            updateState({ ...state, pageData: { ...state.pageData, color: value } })
+                          }
+                          strikeThroughDisabled
+                          optionProps={{
+                            showLabel: false,
+                          }}
+                        />
+                      </>
+                    )
                   ) : (
                     <div>
                       <Skeleton style={{ height: 14, marginBottom: theme.spacing(2) }}></Skeleton>
@@ -205,20 +207,22 @@ const Product = React.memo(lazyProps => {
                 </Grid>
                 <Grid item xs={12}>
                   {product ? (
-                    <>
-                      <Hbox style={{ marginBottom: 10 }}>
-                        <Label>SIZE: </Label>
-                        <Typography>{size.text}</Typography>
-                      </Hbox>
-                      <ProductOptionSelector
-                        options={product.sizes}
-                        value={size}
-                        strikeThroughDisabled
-                        onChange={value =>
-                          updateState({ ...state, pageData: { ...state.pageData, size: value } })
-                        }
-                      />
-                    </>
+                    product.sizes && (
+                      <>
+                        <Hbox style={{ marginBottom: 10 }}>
+                          <Label>SIZE: </Label>
+                          <Typography>{size.text}</Typography>
+                        </Hbox>
+                        <ProductOptionSelector
+                          options={product.sizes}
+                          value={size}
+                          strikeThroughDisabled
+                          onChange={value =>
+                            updateState({ ...state, pageData: { ...state.pageData, size: value } })
+                          }
+                        />
+                      </>
+                    )
                   ) : (
                     <div>
                       <Skeleton style={{ height: 14, marginBottom: theme.spacing(2) }}></Skeleton>
