@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Paper, IconButton, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Close as CloseIcon } from '@material-ui/icons'
