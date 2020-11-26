@@ -278,7 +278,7 @@ const Product = React.memo(lazyProps => {
                     product={product}
                     color={color}
                     size={size}
-                    quantity={quantity}
+                    quantity={Math.min(quantity, quantityAvailable)}
                     price={product.priceText}
                   />
                 </Grid>
