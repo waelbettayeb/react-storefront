@@ -10,7 +10,7 @@ import { Container, Grid, Typography, Hidden, Button } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Row from 'react-storefront/Row'
-import { Hbox } from 'react-storefront/Box'
+import { Hbox, Vbox } from 'react-storefront/Box'
 import Label from 'react-storefront/Label'
 import Rating from 'react-storefront/Rating'
 import get from 'lodash/get'
@@ -129,6 +129,11 @@ const Product = React.memo(lazyProps => {
       <Typography variant="h6" component="h1" gutterBottom>
         {product ? product.name : <Skeleton style={{ height: '1em' }} />}
       </Typography>
+      {product?.sku && (
+        <Typography variant="overline" style={{ marginRight: theme.spacing(2) }}>
+          SKU: {product.sku}
+        </Typography>
+      )}
       <Hbox>
         <Typography style={{ marginRight: theme.spacing(2) }}>{product.priceText}</Typography>
         {product?.rating && <Rating value={product.rating} reviewCount={10} />}
