@@ -95,6 +95,7 @@ const Product = React.memo(lazyProps => {
   const color = get(state, 'pageData.color') || {}
   const size = get(state, 'pageData.size') || {}
   const quantity = get(state, 'pageData.quantity')
+  const quantityAvailable = get(state, 'pageData.product.quantityAvailable')
   const { actions } = useContext(SessionContext)
   const { loading } = state
 
@@ -218,7 +219,13 @@ const Product = React.memo(lazyProps => {
                           value={size}
                           strikeThroughDisabled
                           onChange={value =>
-                            updateState({ ...state, pageData: { ...state.pageData, size: value } })
+                            updateState({
+                              ...state,
+                              pageData: {
+                                ...state.pageData,
+                                size: value,
+                              },
+                            })
                           }
                         />
                       </>
@@ -237,10 +244,17 @@ const Product = React.memo(lazyProps => {
                 <Grid item xs={12}>
                   <Hbox>
                     <Label>QTY:</Label>
+
                     <QuantitySelector
-                      value={quantity}
+                      value={Math.min(quantity, quantityAvailable)}
                       onChange={value =>
-                        updateState({ ...state, pageData: { ...state.pageData, quantity: value } })
+                        updateState({
+                          ...state,
+                          pageData: {
+                            ...state.pageData,
+                            quantity: Math.min(value, product?.quantityAvailable),
+                          },
+                        })
                       }
                     />
                   </Hbox>
@@ -254,7 +268,7 @@ const Product = React.memo(lazyProps => {
                     size="large"
                     data-th="add-to-cart"
                     className={clsx(classes.docked, classes.noShadow)}
-                    disabled={addToCartInProgress}
+                    disabled={addToCartInProgress || Math.min(quantity, quantityAvailable) < 1}
                   >
                     Add to Cart
                   </Button>
