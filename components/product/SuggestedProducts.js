@@ -42,10 +42,10 @@ const useStyles = makeStyles(styles, { name: 'RSFSuggestedProducts' })
 export default function SuggestedProducts({ product }) {
   const classes = useStyles()
   const [suggestedProducts, setSuggestedProducts] = useState(null)
-
+  console.log(product)
   // Fetch suggested products when the product page is mounted
   useEffect(() => {
-    fetch(`/api/p/${encodeURIComponent(product.id)}/suggestions`)
+    fetch(`/api/p/${encodeURIComponent(product.productId)}/suggestions`)
       .then(res => res.json())
       .then(result => setSuggestedProducts(result))
   }, [])
