@@ -82,7 +82,7 @@ function ProductItem({ product, index, classes, className, colorSelector }) {
               }}
             />
           )}
-          <Rating product={product} className={classes.rating} />
+          {product.rating && <Rating product={product} className={classes.rating} />}
           <Typography className={classes.price}>{product.price}</Typography>
         </div>
       </Vbox>
