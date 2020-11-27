@@ -19,6 +19,7 @@ import SortButton from 'react-storefront/plp/SortButton'
 import Fill from 'react-storefront/Fill'
 import fetchFromAPI from 'react-storefront/props/fetchFromAPI'
 import createLazyProps from 'react-storefront/props/createLazyProps'
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles(theme => ({
   sideBar: {
@@ -68,19 +69,19 @@ const Subcategory = lazyProps => {
   // Here is an example of how you can customize the URL scheme for filtering and sorting - /s/1?color=red,blue=sort=pop
   // Note that if you change this, you also need to change pages/api/[...categorySlug].js to correctly handle the query parameters
   // you send it.
+  const router = useRouter()
+  const query = router.query
   const queryForState = useCallback(state => {
     const { filters, page, sort } = state
-    const query = {}
-
+    console.log(state)
+    const name = 'productType'
+    query[name] = ''
     for (let filter of filters) {
-      const [name, value] = filter.split(':')
-
-      console.log(name, value)
-
+      const [value] = filter.split(':')
       if (query[name]) {
-        query[name] = `${query[name]},${value}`
+        query[name] = `${query[name]} OR product_type:${value}`
       } else {
-        query[name] = value
+        query[name] = `product_type:${value}`
       }
     }
 
