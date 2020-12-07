@@ -71,7 +71,7 @@ function ProductItem({ product, index, classes, className, colorSelector }) {
           <Typography variant="subtitle1" className={classes.name}>
             {product.name}
           </Typography>
-          {colorSelector && (
+          {/* {colorSelector && (
             <ProductOptionSelector
               options={store.colors}
               value={store.color}
@@ -81,7 +81,7 @@ function ProductItem({ product, index, classes, className, colorSelector }) {
                 showLabel: false,
               }}
             />
-          )}
+          )} */}
           {product.rating && <Rating product={product} className={classes.rating} />}
           <Typography className={classes.price}>{product.price}</Typography>
         </div>

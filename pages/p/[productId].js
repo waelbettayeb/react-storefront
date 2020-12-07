@@ -25,6 +25,10 @@ import QuantitySelector from 'react-storefront/QuantitySelector'
 import ProductOptionSelector from 'react-storefront/option/ProductOptionSelector'
 import fetchFromAPI from 'react-storefront/props/fetchFromAPI'
 import createLazyProps from 'react-storefront/props/createLazyProps'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const fetchVariant = fetchLatest(fetch)
 
@@ -183,21 +187,27 @@ const Product = React.memo(lazyProps => {
                   {product ? (
                     product.colors && (
                       <>
-                        <Hbox style={{ marginBottom: 10 }}>
-                          <Label>COLOR: </Label>
-                          <Typography>{color.text}</Typography>
-                        </Hbox>
-                        <ProductOptionSelector
-                          options={product.colors}
-                          value={color}
-                          onChange={value =>
-                            updateState({ ...state, pageData: { ...state.pageData, color: value } })
-                          }
-                          strikeThroughDisabled
-                          optionProps={{
-                            showLabel: false,
-                          }}
-                        />
+                        <FormControl className={classes.formControl}>
+                          <InputLabel id="color-label">COLOR</InputLabel>
+                          <Select
+                            labelId="color-label"
+                            value={color.id}
+                            onChange={value =>
+                              updateState({
+                                ...state,
+                                pageData: {
+                                  ...state.pageData,
+                                  color: { id: value.target.value, text: value.target.value },
+                                },
+                              })
+                            }
+                            displayEmpty
+                          >
+                            {product?.colors?.map(value => (
+                              <MenuItem value={value.id}>{value.text}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
                       </>
                     )
                   ) : (
