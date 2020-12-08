@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
+
 import { Typography, Grid, Container, Hidden } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import ResponsiveTiles from 'react-storefront/ResponsiveTiles'
 import ProductItem from '../../components/product/ProductItem'
-import ShowMore from 'react-storefront/plp/ShowMore'
+// import ShowMore from 'react-storefront/plp/ShowMore'
 import Head from 'next/head'
 import BackToTop from 'react-storefront/BackToTop'
 import { Skeleton } from '@material-ui/lab'
@@ -12,7 +13,7 @@ import Breadcrumbs from 'react-storefront/Breadcrumbs'
 import LoadMask from 'react-storefront/LoadMask'
 import useSearchResultsStore from 'react-storefront/plp/useSearchResultsStore'
 import Filter from 'react-storefront/plp/Filter'
-import SearchResultsProvider from 'react-storefront/plp/SearchResultsProvider'
+import SearchResultsProvider from '../../components/SearchResultsProvider'
 import ProductOptionSelector from 'react-storefront/option/ProductOptionSelector'
 import FilterButton from 'react-storefront/plp/FilterButton'
 import SortButton from 'react-storefront/plp/SortButton'
@@ -20,6 +21,7 @@ import Fill from 'react-storefront/Fill'
 import fetchFromAPI from 'react-storefront/props/fetchFromAPI'
 import createLazyProps from 'react-storefront/props/createLazyProps'
 import { useRouter } from 'next/router'
+import ShowMore from '../../components/ShowMoreButton'
 
 const useStyles = makeStyles(theme => ({
   sideBar: {
@@ -41,7 +43,6 @@ const Subcategory = lazyProps => {
   const classes = useStyles()
   const theme = useTheme()
   let { pageData, loading } = store
-
   if (pageData.isLanding) {
     return (
       <>
@@ -69,25 +70,19 @@ const Subcategory = lazyProps => {
   // Here is an example of how you can customize the URL scheme for filtering and sorting - /s/1?color=red,blue=sort=pop
   // Note that if you change this, you also need to change pages/api/[...categorySlug].js to correctly handle the query parameters
   // you send it.
+
   const router = useRouter()
   const query = router.query
   const queryForState = useCallback(state => {
     const { filters, page, sort } = state
-    console.log(state)
-    const name = 'productType'
-    query[name] = ''
-    for (let filter of filters) {
-      const [value] = filter.split(':')
-      if (query[name]) {
-        query[name] = `${query[name]} OR product_type:${value}`
-      } else {
-        query[name] = `product_type:${value}`
-      }
-    }
 
     if (query.more) {
       delete query.more
     }
+
+    // if (query.afterCursor) {
+    //   delete query.afterCursor
+    // }
 
     if (page > 0) {
       query.page = page
@@ -100,12 +95,11 @@ const Subcategory = lazyProps => {
     } else {
       delete query.sort
     }
-
     console.log('query', query)
+    query.afterCursor = state?.afterCursor
 
     return query
   }, [])
-
   return (
     <>
       <Breadcrumbs items={!loading && pageData.breadcrumbs} />
@@ -201,7 +195,9 @@ const Subcategory = lazyProps => {
                 )}
               </Grid>
               <Grid item xs={12}>
-                {!loading && <ShowMore variant="button" style={{ paddingBottom: 200 }} />}
+                {pageData?.afterCursor && (
+                  <>{!loading && <ShowMore variant="button" style={{ paddingBottom: 200 }} />}</>
+                )}
               </Grid>
             </Grid>
           </Hbox>
