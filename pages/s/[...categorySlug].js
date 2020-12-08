@@ -75,19 +75,26 @@ const Subcategory = lazyProps => {
   const query = router.query
   const queryForState = useCallback(state => {
     const { filters, page, sort } = state
-
+    console.log(state)
+    const name = 'productType'
+    query[name] = ''
+    for (let filter of filters) {
+      if (query[name]) {
+        query[name] = `${query[name]} OR product_type:${filter}`
+      } else {
+        query[name] = `product_type:${filter}`
+      }
+    }
     if (query.more) {
       delete query.more
     }
 
-    // if (query.afterCursor) {
-    //   delete query.afterCursor
-    // }
-
     if (page > 0) {
+      query.afterCursor = state?.afterCursor
       query.page = page
     } else {
       delete query.page
+      delete query.afterCursor
     }
 
     if (sort) {
@@ -96,7 +103,6 @@ const Subcategory = lazyProps => {
       delete query.sort
     }
     console.log('query', query)
-    query.afterCursor = state?.afterCursor
 
     return query
   }, [])
