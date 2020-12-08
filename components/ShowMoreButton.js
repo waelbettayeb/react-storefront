@@ -75,7 +75,6 @@ export default function ShowMore({
   const classes = useStyles(others)
   const [loading, setLoading] = useState(false)
   const { actions, pageData } = useContext(SearchResultsContext)
-  console.log('pageData:', pageData)
 
   // if (pageData && pageData.page >= pageData.totalPages - 1) return null
 
@@ -84,8 +83,7 @@ export default function ShowMore({
       setLoading(true)
 
       try {
-        const response = await actions.fetchMore()
-        console.log('response:', response)
+        await actions.fetchMore()
       } finally {
         setLoading(false)
       }
